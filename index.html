@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>E-Commerce Home</title>
+  <style>
+    body {
+      text-align: center;
+      padding-top: 60px;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #f0f0f0, #e0e0ff);
+      background-repeat: no-repeat;
+      background-size: cover;
+      transition: background 0.3s, color 0.3s;
+      background-image: url('background3.jpg');
+      background-position: center;
+      margin: 0;
+    }
+
+    body.dark {
+      background: #121212;
+      color: #eee;
+    }
+
+    .logo {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 40px;
+    }
+
+    .btn-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .btn {
+      width: 250px;
+      padding: 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      background: #4e54c8;
+      color: white;
+    }
+
+    .btn:hover {
+      background: #3a3fc2;
+    }
+
+    .toggle-dark {
+      position: fixed;
+      top: 15px;
+      right: 80px;
+      font-size: 24px;
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      z-index: 1000;
+      width: 50px;
+      height: 50px;
+    }
+
+    body.dark .toggle-dark {
+      background: #333;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <button class="toggle-dark" onclick="toggleDarkMode()">🌙</button>
+
+  <div class="logo">🛒 E-Shop</div>
+  <h1>Welcome to E-Commerce Portal</h1>
+
+  <div class="btn-container">
+    <button class="btn" onclick="location.href='register.html'">📝 User Register</button>
+    <button class="btn" onclick="location.href='login.html'">👤 User Login</button>
+    <button class="btn" onclick="location.href='admin-login.html'">👑 Admin Login</button>
+  </div>
+
+  <script>
+    if (localStorage.getItem("darkMode") === "enabled") {
+      document.body.classList.add("dark");
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      const isDark = document.body.classList.contains("dark");
+      localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Details</title>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      background-image: url('background3.jpg');
+    }
+
+    .details-container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .details-container img {
+      width: 60%;
+      max-height: 350px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .details-container button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 10px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .details-container button:hover {
+      background-color: #218838;
+    }
+
+    .details-container a {
+      display: inline-block;
+      margin-top: 15px;
+      text-decoration: none;
+      color: #007bff;
+    }
+
+    .toggle-dark {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      font-size: 24px;
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    /* Dark mode styles */
+    body.dark {
+      background-color: #121212;
+      color: white;
+    }
+
+    body.dark .details-container {
+      background-color: #2c2c2c;
+      color: white;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+    }
+
+    body.dark a {
+      color: #90caf9;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="toggle-dark" onclick="toggleDarkMode()">🌙</button>
+
+  <div class="details-container" id="productDetails"></div>
+
+  <script>
+    const product = JSON.parse(localStorage.getItem("selectedProduct"));
+    const container = document.getElementById("productDetails");
+
+    if (product) {
+      container.innerHTML = `
+        <img src="${product.image}" alt="${product.name}">
+        <h2>${product.name}</h2>
+        <p><strong>Price:</strong> ₹${parseFloat(product.price).toFixed(2)}</p>
+        
+        <button onclick="addToCart('${product.name}', ${product.price}, '${product.image}')">Add to Cart</button>
+        <br><br>
+        <a href="user-dashboard.html">🔙 Back to Dashboard</a>
+      `;
+    } else {
+      container.innerHTML = "<p>Product not found.</p>";
+    }
+
+    function addToCart(name, price, image) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.push({ name: name, price: price, image: image }); // Ensure key names match
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert(`${name} added to cart!`);
+}
+
+  </script>
+
+  <script>
+    // Apply dark mode on page load if enabled
+    if (localStorage.getItem("darkMode") === "enabled") {
+      document.body.classList.add("dark");
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      const isDark = document.body.classList.contains("dark");
+      localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
+    }
+  </script>
+</body>
+</html>

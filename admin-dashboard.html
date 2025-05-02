@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <style>
+   
+      body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      transition: background 0.3s, color 0.3s;
+      background-image: url('background3.jpg');
+      background-position: center;     
+      margin: 0;
+      }
+
+    body.dark {
+      background: #333;
+      color: #fff;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .admin-dashboard {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .admin-dashboard button {
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      width: 250px;
+    }
+
+    .admin-dashboard button:hover {
+      background-color: #0056b3;
+    }
+
+    body.dark .admin-dashboard button {
+      background-color: #1e88e5;
+
+    }
+
+    .toggle-dark {
+      position: fixed;
+      top: 15px;
+      right: 80px;
+      font-size: 24px;
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      z-index: 1000;
+      width: 50px;
+      height: 50px;
+    }
+    
+  </style>
+</head>
+
+<body>
+  <button class="toggle-dark" onclick="toggleDarkMode()">🌙</button>
+
+  <h2>Welcome, Admin 👨‍💼</h2>
+
+  <div class="admin-dashboard">
+    <button onclick="window.location.href='add-product.html'">➕ Add Product</button>
+    <button onclick="window.location.href='admin-orders.html'">📦 View Orders</button>
+    <button onclick="window.location.href='admin-customers.html'">👥 View Customers</button>
+    <button onclick="adminLogout()">🚪 Logout</button>
+  </div>
+
+  
+  <script>
+    // Admin access protection
+    if (!localStorage.getItem("adminLoggedIn")) {
+      window.location.href = "admin-login.html";
+    }
+
+    function adminLogout() {
+      localStorage.removeItem("adminLoggedIn");
+      window.location.href = "admin-login.html";
+    }
+
+    // Dark mode
+    if (localStorage.getItem("darkMode") === "enabled") {
+      document.body.classList.add("dark");
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      const isDark = document.body.classList.contains("dark");
+      localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
+    }
+  </script>
+</body>
+
+</html>

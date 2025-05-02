@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Registered Customers</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f0f0;
+      background-image: url('background3.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #333;
+    }
+
+    body.dark {
+      background: #121212;
+      color: #eee;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto 30px;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    body.dark table {
+      background: rgba(40, 40, 40, 0.9);
+    }
+
+    th, td {
+      padding: 12px 20px;
+      border-bottom: 1px solid #ccc;
+      text-align: left;
+    }
+
+    th {
+      background-color: #4e54c8;
+      color: white;
+    }
+
+    body.dark th {
+      background-color: #1e88e5;
+    }
+
+    .no-users {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 40px;
+    }
+
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 16px;
+      text-decoration: none;
+      font-weight: bold;
+      color: #4e54c8;
+    }
+
+    body.dark .back {
+      color: #9da9ff;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Registered Customers 👥</h2>
+  <div id="customerList"></div>
+
+  <a class="back" href="admin-dashboard.html">⬅️ Back to Dashboard</a>
+
+  <script>
+    if (localStorage.getItem("darkMode") === "enabled") {
+      document.body.classList.add("dark");
+    }
+
+    const customerList = document.getElementById("customerList");
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    if (users.length === 0) {
+      customerList.innerHTML = `<div class="no-users">No users registered.</div>`;
+    } else {
+      let table = `
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+          </tr>
+      `;
+
+      users.forEach(user => {
+        table += `
+          <tr>
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+          </tr>
+        `;
+      });
+
+      table += `</table>`;
+      customerList.innerHTML = table;
+    }
+  </script>
+</body>
+</html>

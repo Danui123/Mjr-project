@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      transition: background 0.3s, color 0.3s;
+      background-image: url('background3.jpg');
+      background-position: center;
+    }
+
+    body.dark {
+      background-color: #121212;
+      color: white;
+    }
+
+    .login-form {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+    }
+
+    body.dark .login-form {
+      background-color: #2c2c2c;
+      border-color: #444;
+    }
+
+    .login-form input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .login-form button {
+      width: 95%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+       .toggle-dark {
+      position: fixed;
+      top: 15px;
+      right: 80px;
+      font-size: 24px;
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      z-index: 1000;
+      width: 50px;
+      height: 50px;
+    }
+
+
+  </style>
+</head>
+<body>
+  <button class="toggle-dark" onclick="toggleDarkMode()">🌙</button>
+
+  <h2 style="text-align: center;">Admin Login</h2>
+  <form id="adminLoginForm" class="login-form">
+    <input type="text" id="adminUsername" placeholder="Username" required><br>
+    <input type="password" id="adminPassword" placeholder="Password" required><br>
+    <button type="submit">Login</button>
+  </form>
+
+  <script>
+    document.getElementById("adminLoginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const username = document.getElementById("adminUsername").value;
+      const password = document.getElementById("adminPassword").value;
+
+      if (username === "admin" && password === "admin123") {
+        localStorage.setItem("adminLoggedIn", "true");
+        window.location.href = "admin-dashboard.html";
+      } else {
+        alert("Invalid admin credentials.");
+      }
+    });
+
+    // Dark mode
+    if (localStorage.getItem("darkMode") === "enabled") {
+      document.body.classList.add("dark");
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      const isDark = document.body.classList.contains("dark");
+      localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
+    }
+  </script>
+</body>
+</html>
+

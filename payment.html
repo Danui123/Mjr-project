@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment - Cash on Delivery</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-image: url('background3.jpg');
+    }
+
+    body.dark {
+      background-color: #121212;
+      color: white;
+    }
+
+    .payment-form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .payment-form input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .payment-form button {
+      width: 105%;
+      padding: 10px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .top-bar button, .top-bar a {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+      /* styles here (same as before)... */
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <button onclick="toggleDarkMode()">🌙</button>
+    <a href="logout.html">🚪 Logout</a>
+  </div>
+
+  <h2>Payment - Cash on Delivery</h2>
+  <form id="paymentForm" class="payment-form">
+    <input type="text" id="fullName" placeholder="Full Name" required><br>
+    <input type="text" id="address" placeholder="Delivery Address" required><br>
+    <input type="tel" id="phone" placeholder="Phone Number" required><br>
+    <button type="submit">Place Order</button>
+  </form>
+
+  <script>
+    document.getElementById("paymentForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const fullName = document.getElementById("fullName").value;
+      const address = document.getElementById("address").value;
+      const phone = document.getElementById("phone").value;
+      const cart = JSON.parse(sessionStorage.getItem("pendingCart")) || [];
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      const order = {
+        id: Date.now(),
+        name: fullName,
+        address,
+        phone,
+        items: cart,
+        date: new Date().toLocaleString(),
+        user: user?.email || user?.name
+      };
+
+      let orders = JSON.parse(localStorage.getItem("orders")) || [];
+      orders.push(order);
+      localStorage.setItem("orders", JSON.stringify(orders));
+
+      // ✅ Clean up
+      localStorage.removeItem("cart");
+      sessionStorage.removeItem("pendingCart");
+      localStorage.setItem("orderPlaced", "true");
+
+      window.location.href = "notification.html";
+    });
+
+    if (localStorage.getItem("darkMode") === "enabled") {
+      document.body.classList.add("dark");
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      const isDark = document.body.classList.contains("dark");
+      localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All Orders</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('background3.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: background 0.3s, color 0.3s;
+      padding: 20px;
+    }
+
+    .order {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+    }
+
+    .order h3 {
+      margin-top: 0;
+    }
+
+    .order ul {
+      padding-left: 20px;
+    }
+
+    .order li {
+      list-style-type: disc;
+    }
+
+    body.dark {
+      background-color: #121212;
+      color: white;
+    }
+
+    body.dark .order {
+      background-color: #2c2c2c;
+      color: white;
+    }
+
+    .toggle-dark {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      font-size: 24px;
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    a {
+      text-decoration: none;
+      color: #4e54c8;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <button class="toggle-dark" onclick="toggleDarkMode()">🌙</button>
+  <h2>🧾 All Orders</h2>
+  <div id="ordersContainer"></div>
+
+  <a href="user-dashboard.html">🔙 Back to Dashboard</a>
+
+  <script>
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const container = document.getElementById("ordersContainer");
+
+    if (orders.length === 0) {
+      container.innerHTML = "<p>No orders placed yet.</p>";
+    } else {
+      orders.forEach((order, index) => {
+        let itemsList = "<ul>";
+        if (order.items && order.items.length > 0) {
+          order.items.forEach(item => {
+            itemsList += `<li>${item.name} - ₹${item.price}</li>`;
+          });
+        } else {
+          itemsList += "<li>No items</li>";
+        }
+        itemsList += "</ul>";
+
+        container.innerHTML += `
+          <div class="order">
+            <h3>Order #${index + 1}</h3>
+            <p><strong>Name:</strong> ${order.name}</p>
+            <p><strong>Address:</strong> ${order.address}</p>
+            <p><strong>Phone:</strong> ${order.phone}</p>
+            <p><strong>Date:</strong> ${order.date}</p>
+            <p><strong>Items:</strong> ${itemsList}</p>
+          </div>
+        `;
+      });
+    }
+
+    if (localStorage.getItem("darkMode") === "enabled") {
+      document.body.classList.add("dark");
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      const isDark = document.body.classList.contains("dark");
+      localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
+    }
+  </script>
+</body>
+</html>

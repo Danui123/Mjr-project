@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Confirmation</title>
+  
+  <style>
+    body{
+        background-image: url('background3.jpg');
+        background-repeat: no-repeat;
+        background-size:cover ;
+        background-position: center;
+    }
+    .top-right {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .top-right a {
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .toggle-dark {
+      font-size: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .notification-box {
+      text-align: center;
+      margin-top: 150px;
+    }
+
+    body.dark {
+      background-color: #121212;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top-right corner buttons -->
+  <div class="top-right">
+    <a href="logout.html">🚪 Logout</a>
+    <button class="toggle-dark" onclick="toggleDarkMode()">🌙</button>
+  </div>
+
+  <!-- Order message -->
+  <div class="notification-box">
+    <h2>🎉 Thank You!</h2>
+    <p>Your order has been placed successfully.</p>
+    <a href="user-dashboard.html">Back to Home</a>
+  </div>
+
+  <!-- Order check -->
+  <script>
+    const placed = localStorage.getItem("orderPlaced");
+    if (!placed) {
+      window.location.href = "user-dashboard.html";
+    } else {
+      localStorage.removeItem("orderPlaced");
+    }
+  </script>
+
+  <!-- Dark Mode -->
+  <script>
+    if (localStorage.getItem("darkMode") === "enabled") {
+      document.body.classList.add("dark");
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      const isDark = document.body.classList.contains("dark");
+      localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
+    }
+  </script>
+</body>
+</html>

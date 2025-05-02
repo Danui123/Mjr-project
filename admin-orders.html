@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - View Orders</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 40px;
+      background-image: url('background3.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      color: #333;
+    }
+
+    body.dark {
+      background-color: #121212;
+      color: white;
+    }
+
+    h2 {
+      text-align: center;
+      color: #4e54c8;
+    }
+
+    .order-card {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 12px;
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .order-card h3 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    .order-card p {
+      margin: 6px 0;
+    }
+
+    .order-card ul {
+      padding-left: 20px;
+    }
+
+    .order-card li {
+      margin-bottom: 5px;
+    }
+
+    a {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+      text-decoration: none;
+      color: #4e54c8;
+      font-weight: bold;
+    }
+
+    body.dark .order-card {
+      background-color: #2c2c2c;
+      border: 1px solid #444;
+    }
+
+    body.dark .order-card h3,
+    body.dark .order-card p,
+    body.dark .order-card li {
+      color: #fff;
+    }
+
+    body.dark a {
+      color: #90caf9;
+    }
+
+    .toggle-dark {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      font-size: 24px;
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="toggle-dark" onclick="toggleDarkMode()">🌙</button>
+
+  <h2>All Orders 📦</h2>
+  <div id="ordersContainer"></div>
+  <br>
+  <a href="admin-dashboard.html">⬅️ Back to Dashboard</a>
+
+  <script>
+    // Admin access check
+    if (!localStorage.getItem("adminLoggedIn")) {
+      window.location.href = "admin-login.html";
+    }
+
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const container = document.getElementById("ordersContainer");
+
+    if (orders.length === 0) {
+      container.innerHTML = "<p style='text-align:center;'>No orders found.</p>";
+    } else {
+      orders.forEach((order, index) => {
+        const div = document.createElement("div");
+        div.className = "order-card";
+        div.innerHTML = `
+          <h3>Order #${index + 1}</h3>
+          <p><strong>Name:</strong> ${order.name}</p>
+          <p><strong>Address:</strong> ${order.address}</p>
+          <p><strong>Phone:</strong> ${order.phone}</p>
+          <p><strong>Date:</strong> ${order.date}</p>
+          <p><strong>Items:</strong></p>
+          <ul>${order.items.map(item => `<li>${item.name} - ₹${item.price}</li>`).join('')}</ul>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // Dark mode
+    if (localStorage.getItem("darkMode") === "enabled") {
+      document.body.classList.add("dark");
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      const isDark = document.body.classList.contains("dark");
+      localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
+    }
+  </script>
+</body>
+</html>

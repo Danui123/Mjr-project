@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Cart</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('background3.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    h2 {
+      text-align: center;
+      padding-top: 20px;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      margin: 20px auto;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      width: 80%;
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .cart-item img {
+      width: 120px;
+      height: auto;
+      margin-right: 20px;
+      border-radius: 10px;
+    }
+
+    .cart-item h3 {
+      margin: 0 0 5px;
+    }
+
+    .total {
+      font-weight: bold;
+      font-size: 20px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .place-order {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 30px;
+      font-size: 18px;
+      background-color: #4e54c8;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .place-order:hover {
+      background-color: #383ec0;
+    }
+
+    .toggle-dark {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      font-size: 24px;
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    body.dark {
+      background-color: #121212;
+      color: white;
+    }
+
+    body.dark .cart-item {
+      background-color: #2c2c2c;
+      border-color: #444;
+    }
+
+    body.dark .place-order {
+      background-color: #6666cc;
+    }
+
+    body.dark .place-order:hover {
+      background-color: #5757b7;
+    }
+    /* styles here (same as before)... */
+  </style>
+</head>
+<body>
+  <button class="toggle-dark" onclick="toggleDarkMode()">🌙</button>
+  <h2>🛒 Your Shopping Cart</h2>
+  <div id="cartItems"></div>
+  <div class="total" id="totalPrice"></div>
+  <button class="place-order" onclick="placeOrder()">✅ Place Order</button>
+
+  <script>
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const container = document.getElementById("cartItems");
+    let total = 0;
+
+    if (cart.length === 0) {
+      container.innerHTML = "<p style='text-align:center;'>Your cart is empty.</p>";
+    } else {
+      cart.forEach(item => {
+        if (item && item.name && item.price && item.image) {
+          total += Number(item.price);
+          container.innerHTML += `
+            <div class="cart-item">
+              <img src="${item.image}" alt="${item.name}">
+              <div>
+                <h3>${item.name}</h3>
+                <p>Price: ₹${item.price}</p>
+              </div>
+            </div>
+          `;
+        }
+      });
+      document.getElementById("totalPrice").innerText = `Total: ₹${total}`;
+    }
+
+    function placeOrder() {
+      if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+      }
+      // ✅ Save the cart temporarily
+      sessionStorage.setItem("pendingCart", JSON.stringify(cart));
+      window.location.href = "payment.html";
+    }
+
+    if (localStorage.getItem("darkMode") === "enabled") {
+      document.body.classList.add("dark");
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      const isDark = document.body.classList.contains("dark");
+      localStorage.setItem("darkMode", isDark ? "enabled" : "disabled");
+    }
+  </script>
+</body>
+</html>
